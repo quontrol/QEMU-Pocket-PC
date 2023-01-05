@@ -1,0 +1,31 @@
+Command line:
+[0] 'qemu.exe'
+[1] '-tb-size'
+[2] '16'
+[3] '-emul'
+[4] '\Storage Card\QEMU\emul\Win98SE.Rus'
+[5] '-hda'
+[6] '1G-qcow.img'
+[7] '-boot'
+[8] 'c'
+[9] '-soundhw'
+[10] 'sb16'
+[11] '-m'
+[12] '16'
+Code gen buffer addr: 001d1b80, size: 01000000
+Phys RAM buffer addr: 54000000, size: 01250000
+qemu_ui.dll base address: 78280000, image size: 00011000
+int21hk.dll base address: 01640000, image size: 00007000
+int33mouse.dll base address: 01630000, image size: 00006000
+async time  1784000000 (1.784)
+qemu time   3467300000 (3.467)
+fileIO time 762600000 (0.763)
+async time  831403800000 (831.404)
+qemu time   984000000 (0.984)
+fileIO time 0 (0.000)
+13A579FD qemu: flush code_size=16419452 (97% full) nb_tbs=32768 avg_tb_size=501
+async time  3107400000 (3.107)
+qemu time   5002000000 (5.002)
+fileIO time 947400000 (0.947)
+13A6CCE7 qemu: flush code_size=5798252 (34% full) nb_tbs=11443 avg_tb_size=506
+Deleting swap files. Done.
