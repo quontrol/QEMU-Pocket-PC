@@ -1,0 +1,5 @@
+[int21]
+PathToFiles=\Storage Card
+
+[qemu_ui]
+min_fps=1

@@ -1,0 +1,4 @@
+-hda
+linux.img
+-boot
+c

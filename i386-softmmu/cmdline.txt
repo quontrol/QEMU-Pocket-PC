@@ -1,0 +1,4 @@
+-emul
+\Storage Card\QEMU\emul\linux
+-tb-size
+31
