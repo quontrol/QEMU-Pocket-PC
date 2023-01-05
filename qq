@@ -1,0 +1,466 @@
+Comparing files U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c and CPU-EXEC.C
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+#define DEBUG_SIGNAL
+//#define DEBUG_INT (1)
+
+***** CPU-EXEC.C
+#define DEBUG_SIGNAL
+
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+
+#ifdef UNDER_CE
+static unsigned long volatile saved_regs[16];
+#define SAVE_GLOBALS_ARM() 
+//do {                                     
+//        asm volatile ("stmia %0, {r4,r5,r6,r7,r8,r9,r10,r11,r12,r14}" : : "r" (saved_regs) : "memory" );     
+//    } while(0)
+
+#define RESTORE_GLOBALS_ARM() 
+//do {                                  
+//        asm volatile ("ldmia %0, {r4,r5,r6,r7,r8,r9,r10,r11,r12,r14}" : : "r" (saved_regs) 
+//                                      : "memory", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r14");     
+//    } while(0)
+#endif
+***** CPU-EXEC.C
+
+void cpu_loop_exit(void)
+{
+    /* NOTE: the register at this point must be saved by hand because
+       longjmp restore them */
+    regs_to_env();
+    longjmp(env->jmp_env, 1);
+}
+
+#if !(defined(TARGET_SPARC) || defined(TARGET_SH4) || defined(TARGET_M68K))
+#define reg_T2
+#endif
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+
+void cpu_loop_exit(void)
+{
+    /* NOTE: the register at this point must be saved by hand because
+       longjmp restore them */
+    regs_to_env();
+    longjmp(env->jmp_env, 1);
+}
+
+#if !(defined(TARGET_SPARC) || defined(TARGET_SH4) || defined(TARGET_M68K))
+#define reg_T2
+#endif
+***** CPU-EXEC.C
+
+/* exit the current TB from a signal handler. The host registers are
+   restored in a state compatible with the CPU emulator
+ */
+void cpu_resume_from_signal(CPUState *env1, void *puc)
+{
+#if !defined(CONFIG_SOFTMMU)
+    struct ucontext *uc = puc;
+#endif
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+
+/* exit the current TB from a signal handler. The host registers are
+   restored in a state compatible with the CPU emulator
+ */
+void cpu_resume_from_signal(CPUState *env1, void *puc)
+{
+#if !defined(CONFIG_SOFTMMU)
+    struct ucontext *uc = puc;
+#endif
+
+    env = env1;
+***** CPU-EXEC.C
+
+    env = env1;
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+#if !defined(CONFIG_SOFTMMU)
+#ifndef UNDER_CE
+    if (puc) {
+***** CPU-EXEC.C
+#if !defined(CONFIG_SOFTMMU)
+    if (puc) {
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+#endif
+#endif
+    longjmp(env->jmp_env, 1);
+***** CPU-EXEC.C
+#endif
+    longjmp(env->jmp_env, 1);
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+
+#ifdef CONFIG_PROFILER
+int64_t findtb_time=0;
+#endif
+
+***** CPU-EXEC.C
+
+
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+{
+    TranslationBlock *tb, **ptb1, *ptbprev=0;
+    int code_gen_size;
+***** CPU-EXEC.C
+{
+    TranslationBlock *tb, **ptb1;
+    int code_gen_size;
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+    uint8_t *tc_ptr;
+#ifdef CONFIG_PROFILER
+    int64_t ti;
+#endif
+
+    regs_to_env(); /* XXX: do it just before get_phys_addr_code() and cpu_gen_code() */
+
+***** CPU-EXEC.C
+    uint8_t *tc_ptr;
+
+    spin_lock(&tb_lock);
+
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+
+    /* find translated block using physical mappings */
+***** CPU-EXEC.C
+
+    regs_to_env(); /* XXX: do it just before cpu_gen_code() */
+
+    /* find translated block using physical mappings */
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+                if (tb->page_addr[1] == phys_page2)
+                    goto found1;
+            } else {
+                goto found1;
+            }
+***** CPU-EXEC.C
+                if (tb->page_addr[1] == phys_page2)
+                    goto found;
+            } else {
+                goto found;
+            }
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+        }
+        ptbprev = *ptb1;
+        ptb1 = &tb->phys_hash_next;
+***** CPU-EXEC.C
+        }
+        ptb1 = &tb->phys_hash_next;
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+ not_found:
+#ifdef CONFIG_PROFILER
+        ti = profile_getclock();
+#endif
+
+    spin_lock(&tb_lock);
+
+    /* if no translated code available, then translate it now */
+***** CPU-EXEC.C
+ not_found:
+    /* if no translated code available, then translate it now */
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+
+    spin_unlock(&tb_lock);
+
+#ifdef CONFIG_PROFILER
+        findtb_time += profile_getclock() - ti;
+#endif
+        goto found;
+ found1:
+        if(ptbprev)
+        {
+//      spin_lock(&tb_lock);
+                ptbprev->phys_hash_next = tb->phys_hash_next;
+            tb->phys_hash_next = tb_phys_hash[h];
+            tb_phys_hash[h] = tb;
+//      spin_unlock(&tb_lock);
+    }
+ found:
+***** CPU-EXEC.C
+
+ found:
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+    env->tb_jmp_cache[tb_jmp_cache_hash_func(pc)] = tb;
+    return tb;
+***** CPU-EXEC.C
+    env->tb_jmp_cache[tb_jmp_cache_hash_func(pc)] = tb;
+    spin_unlock(&tb_lock);
+    return tb;
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+
+static 
+//#ifndef CONFIG_PROFILER
+inline 
+//#endif
+TranslationBlock *tb_find_fast(void)
+{
+    TranslationBlock *tb=0;
+    target_ulong cs_base, pc;
+***** CPU-EXEC.C
+
+static inline TranslationBlock *tb_find_fast(void)
+{
+    TranslationBlock *tb;
+    target_ulong cs_base, pc;
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+
+    if(env->prev_tb)
+        tb=env->prev_tb->next_tb;
+#if defined(TARGET_I386)
+    cs_base = env->segs[R_CS].base;
+    pc = cs_base + env->eip;
+#endif
+    if (__builtin_expect(!tb || tb->pc != pc, 0)) {
+    /* we record a subset of the CPU state. It will
+***** CPU-EXEC.C
+
+    /* we record a subset of the CPU state. It will
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+    flags |= env->intercept;
+#elif defined(TARGET_ARM)
+***** CPU-EXEC.C
+    flags |= env->intercept;
+    cs_base = env->segs[R_CS].base;
+    pc = cs_base + env->eip;
+#elif defined(TARGET_ARM)
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+    }
+    } 
+    return tb;
+***** CPU-EXEC.C
+    }
+    return tb;
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+    uint8_t *tc_ptr;
+
+***** CPU-EXEC.C
+    uint8_t *tc_ptr;
+#ifdef UNDER_CE
+        static int _old_sp=0;
+        int _sp;
+#endif
+
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+                    break;
+                } else 
+#ifdef UNDER_CE
+                                if(env->exception_index == EXCP_HOOK)
+                                {
+typedef void t_emu_func(CPUState *);
+                                        regs_to_env();
+                                        SAVE_GLOBALS_ARM();
+                                        ((t_emu_func*)env->error_code)(env);
+                                        RESTORE_GLOBALS_ARM();
+                                        env_to_regs();
+                    env->old_exception = -1;
+                    env->exception_index = -1;
+//                      longjmp(env->jmp_env, 1);
+                } else
+#endif
+                
+                if (env->user_mode_only) {
+                    /* if user mode only, we simulate a fake exception
+***** CPU-EXEC.C
+                    break;
+                } else if (env->user_mode_only) {
+                    /* if user mode only, we simulate a fake exception
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+#if defined(TARGET_I386)
+                        && (env->hflags & HF_GIF_MASK)
+#endif
+***** CPU-EXEC.C
+#if defined(TARGET_I386)
+                        && env->hflags & HF_GIF_MASK
+#endif
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+                                ) {
+
+                    if (interrupt_request & CPU_INTERRUPT_DEBUG) {
+***** CPU-EXEC.C
+                                ) {
+                    if (interrupt_request & CPU_INTERRUPT_DEBUG) {
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+                        intno = cpu_get_pic_interrupt(env);
+                        if ((loglevel & CPU_LOG_TB_IN_ASM)) {
+                            fprintf(logfile, "Servicing hardware INT=0x%02x\n", intno);
+***** CPU-EXEC.C
+                        intno = cpu_get_pic_interrupt(env);
+                        if (loglevel & CPU_LOG_TB_IN_ASM) {
+                            fprintf(logfile, "Servicing hardware INT=0x%02x\n", intno);
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+                        }
+#ifdef DEBUG_INT
+                        printf("%08X Servicing hardware INT=0x%02x\n", GetTickCount(),intno);
+#endif
+                        do_interrupt(intno, 0, 0, 0, 1);
+***** CPU-EXEC.C
+                        }
+                        do_interrupt(intno, 0, 0, 0, 1);
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+                         intno = ldl_phys(env->vm_vmcb + offsetof(struct vmcb, control.int_vector));
+                         if ((loglevel & CPU_LOG_TB_IN_ASM))
+                             fprintf(logfile, "Servicing virtual hardware INT=0x%02x\n", intno);
+#ifdef DEBUG_INT
+                         printf("%08X Servicing hardware INT=0x%02x\n", GetTickCount(),intno);
+#endif
+                                 do_interrupt(intno, 0, 0, -1, 1);
+                         stl_phys(env->vm_vmcb + offsetof(struct vmcb, control.int_ctl),
+***** CPU-EXEC.C
+                         intno = ldl_phys(env->vm_vmcb + offsetof(struct vmcb, control.int_vector));
+                         if (loglevel & CPU_LOG_TB_IN_ASM)
+                             fprintf(logfile, "Servicing virtual hardware INT=0x%02x\n", intno);
+                         do_interrupt(intno, 0, 0, -1, 1);
+                         stl_phys(env->vm_vmcb + offsetof(struct vmcb, control.int_ctl),
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+#endif
+
+                tb = tb_find_fast();
+***** CPU-EXEC.C
+#endif
+                tb = tb_find_fast();
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+                    spin_unlock(&tb_lock);
+                 }
+                }
+***** CPU-EXEC.C
+                    spin_unlock(&tb_lock);
+                }
+                }
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+                env->current_tb = tb;
+                if(env->prev_tb)
+                {
+                        if(tb->prev_tb != env->prev_tb)
+                        {
+                            if(tb->prev_tb)
+                                tb->prev_tb->next_tb=0;
+                            env->prev_tb->next_tb=tb;
+                            tb->prev_tb=env->prev_tb;
+                        }
+                }
+                env->prev_tb = tb;
+                /* execute the generated code */
+***** CPU-EXEC.C
+                env->current_tb = tb;
+                /* execute the generated code */
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+#ifdef UNDER_CE
+                asm volatile ("mov pc, %0\n\t"
+***** CPU-EXEC.C
+#ifdef UNDER_CE
+{
+    asm volatile ("mov %0,sp\n" : "=r" (_sp) );
+
+        if(_old_sp && _sp!=_old_sp)
+                cpu_abort(first_cpu,"SP register broken!");
+        _old_sp=_sp;
+
+                asm volatile ("mov pc, %0\n\t"
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+                              : "r" (gen_func)
+                              : "r0","r1","r2","r3","r4","r5","r6","r7","r8","r9","r10","r11","r13","lr","cc","memory");
+#else
+***** CPU-EXEC.C
+                              : "r" (gen_func)
+                              : "r0","r1","r2","r3","r8","r9","r10","r11","r13","lr","%cc","memory");
+
+    asm volatile ("mov %0,sp\n" : "=r" (_sp) );
+
+        if(_sp!=_old_sp)
+                cpu_abort(first_cpu,"SP register broken on exit_tb by %d!",_old_sp-_sp);
+        _old_sp=_sp;
+}
+#else
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+#elif defined(__arm__)
+#ifdef UNDER_CE
+int cpu_signal_handler(int host_signum, void *pinfo,
+***** CPU-EXEC.C
+#elif defined(__arm__)
+
+int cpu_signal_handler(int host_signum, void *pinfo,
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+{
+        // unimplemented yet
+}
+#else
+int cpu_signal_handler(int host_signum, void *pinfo,
+                       void *puc)
+{
+    siginfo_t *info = pinfo;
+***** CPU-EXEC.C
+{
+    siginfo_t *info = pinfo;
+*****
+
+***** U:\CYGWIN\USR\SRC\QEMU-0.9.1\1\cpu-exec.c
+}
+#endif
+#elif defined(__mc68000)
+***** CPU-EXEC.C
+}
+
+#elif defined(__mc68000)
+*****
+
